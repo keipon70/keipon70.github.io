@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>問い合わせLINE通知ツール - ポートフォリオ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>問い合わせLINE通知ツール</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>課題：フォームからの問い合わせに気づくのが遅れ、機会損失に</h2>
+            <p>Webサイトの問い合わせフォームからの連絡は、メールで受信することが一般的です。しかし、他のメールに埋もれてしまい、お客様への返信が遅れてしまうことはありませんか？</p>
+            <h3>Before</h3>
+            <ul>
+                <li>フォームからの問い合わせがメールボックスに届く</li>
+                <li>担当者が定期的にメールをチェックしないと気づけない</li>
+                <li>気づいた頃には、お客様の熱が冷めてしまっていることも</li>
+            </ul>
+            <h3>After</h3>
+            <p>このツールを使えば、問い合わせに即座に対応できます。</p>
+            <ul>
+                <li>Googleフォームに回答があった瞬間に、指定したLINEアカウントに通知が届く</li>
+                <li>外出先でもスマートフォンで問い合わせ内容をすぐに確認</li>
+                <li>迅速な一次対応が可能になり、顧客満足度が向上</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>ツールの機能と使い方</h2>
+            <p>（ここにツールのスクリーンショットやGIF画像を挿入します）</p>
+            <ol>
+                <li>お客様がWebサイトのGoogleフォームから問い合わせを送信します。</li>
+                <li>ほぼリアルタイムで、あなたのLINEに問い合わせ内容が通知されます。</li>
+                <li>すぐに内容を確認し、お客様への対応を開始できます。</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>使用した技術</h2>
+            <ul>
+                <li>Google Apps Script (GAS)</li>
+                <li>Google Forms</li>
+                <li>LINE Notify</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>コード（一部抜粋）</h2>
+            <pre><code>
+// Googleフォームの送信をトリガーにLINEに通知するGASのサンプルコード
+function onFormSubmit(e) {
+  const formResponse = e.response;
+  const itemResponses = formResponse.getItemResponses();
+  
+  let message = '問い合わせがありました。\n';
+  for (let i = 0; i < itemResponses.length; i++) {
+    const question = itemResponses[i].getItem().getTitle();
+    const answer = itemResponses[i].getResponse();
+    message += `\n${question}: ${answer}`;
+  }
+
+  sendLineNotify(message);
+}
+
+function sendLineNotify(message) {
+  const token = 'YOUR_LINE_NOTIFY_TOKEN'; // LINE Notifyのアクセストークン
+  const options = {
+    'method': 'post',
+    'payload': `message=${message}`,
+    'headers': {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  UrlFetchApp.fetch('https://notify-api.line.me/api/notify', options);
+}
+            </code></pre>
+        </section>
+
+        <a href="index.html">ポートフォリオ一覧に戻る</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 けいぽん</p>
+    </footer>
+</body>
+</html>
