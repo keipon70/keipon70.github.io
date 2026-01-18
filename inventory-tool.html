@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在庫管理ツール - ポートフォリオ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>在庫管理ツール</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>課題：手作業での在庫確認は、見落としやタイムラグが発生しやすい</h2>
+            <p>ECショップや店舗の在庫を手作業で管理していると、数え間違いや入力ミスが起こりがちです。また、在庫が少なくなっていることに気づくのが遅れ、販売機会を逃してしまうこともあります。</p>
+            <h3>Before</h3>
+            <ul>
+                <li>毎日、目視で在庫数を確認し、スプレッドシートに手入力</li>
+                <li>発注担当者が定期的にシートを確認し、発注量を判断</li>
+                <li>欠品してから発注することもしばしば</li>
+            </ul>
+            <h3>After</h3>
+            <p>このツールを使えば、在庫管理の大部分を自動化できます。</p>
+            <ul>
+                <li>スプレッドシートに入出庫数を入力するだけで、リアルタイムに在庫数を自動計算</li>
+                <li>在庫が事前に設定した数を下回ると、担当者のLINEに自動で通知</li>
+                <li>発注漏れや欠品のリスクを大幅に削減</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>ツールの機能と使い方</h2>
+            <p>（ここにツールのスクリーンショットやGIF画像を挿入します）</p>
+            <ol>
+                <li>商品が入荷、または売れた際に、スプレッドシートに入出庫数を入力します。</li>
+                <li>現在の在庫数が自動で計算・更新されます。</li>
+                <li>在庫数が設定した閾値を下回ると、指定したLINEアカウントに通知が届きます。</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>使用した技術</h2>
+            <ul>
+                <li>Google Apps Script (GAS)</li>
+                <li>Google Spreadsheet</li>
+                <li>LINE Messaging API</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>コード（一部抜粋）</h2>
+            <pre><code>
+// スプレッドシートの編集をトリガーに在庫数をチェックし、LINEに通知するGASのサンプルコード
+function checkInventory() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('在庫管理');
+  const data = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    const productName = data[i][0];
+    const stockCount = data[i][1];
+    const threshold = data[i][2];
+
+    if (stockCount < threshold) {
+      const message = `${productName}の在庫が少なくなっています。現在の在庫数：${stockCount}`;
+      sendLineNotify(message);
+    }
+  }
+}
+
+function sendLineNotify(message) {
+  const token = 'YOUR_LINE_NOTIFY_TOKEN'; // LINE Notifyのアクセストークン
+  const options = {
+    'method': 'post',
+    'payload': `message=${message}`,
+    'headers': {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  UrlFetchApp.fetch('https://notify-api.line.me/api/notify', options);
+}
+            </code></pre>
+        </section>
+
+        <a href="index.html">ポートフォリオ一覧に戻る</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 けいぽん</p>
+    </footer>
+</body>
+</html>
