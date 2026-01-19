@@ -35,3 +35,32 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.image-gallery figure {
+    flex: 1 1 200px; /* 最小幅200pxで折り返す */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.image-gallery img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-gallery figcaption {
+    padding: 10px;
+    font-size: 0.9em;
+    background: #f9f9f9;
+}
